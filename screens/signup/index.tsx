@@ -105,6 +105,20 @@ const Index = ({navigation}: any) => {
             }}>
             <Text style={styles.btnText}>Sign Up with google</Text>
           </TouchableOpacity>
+
+          <View style={importedStyles.footer}>
+            <Text style={importedStyles.newText}>
+              Already have an account ?{' '}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Sign In');
+              }}>
+              <Text style={[importedStyles.newText, importedStyles.underline]}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>

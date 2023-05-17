@@ -18,6 +18,7 @@ import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {useDispatch} from 'react-redux';
 import {setNews} from '../../store/slices/news';
 import {useNavigation} from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 const Index = () => {
   let {navigate} = useNavigation();
   //   const [news, setNews] = useState<Item[]>([]);
@@ -69,6 +70,13 @@ const Index = () => {
       <View style={styles.screen}>
         <View style={styles.appbar}>
           <Text style={styles.toptext}>FP News</Text>
+          <TouchableOpacity
+            style={styles.errorbtn}
+            onPress={() => {
+              throw new Error('RunTime error');
+            }}>
+            <Text style={styles.errText}>Error</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.newsListContainer}>
           {!loading && news.length > 0 ? (
@@ -102,10 +110,25 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 20,
     backgroundColor: '#1A2421',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  errorbtn: {
+    backgroundColor: 'red',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 10,
   },
   toptext: {
     color: 'white',
     fontSize: 24,
+  },
+  errText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '400',
   },
   sectionContainer: {
     marginTop: 32,

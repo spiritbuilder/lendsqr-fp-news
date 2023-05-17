@@ -14,6 +14,7 @@ const Index = ({navigation}: any) => {
           style={styles.button}
           onPress={() => {
             console.log('signed');
+            navigation.navigate('News Listing');
           }}>
           <Text style={styles.btnText}>Sign in with google</Text>
         </TouchableOpacity>
