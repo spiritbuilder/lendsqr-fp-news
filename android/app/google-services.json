@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "672262671858",
+    "project_id": "lendsqr-fp-news-8907a",
+    "storage_bucket": "lendsqr-fp-news-8907a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672262671858:android:7e49587d9f8a600a5a6f6b",
+        "android_client_info": {
+          "package_name": "com.fpnews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "672262671858-2rr5gc4io6o39o8uct7p4mg85oei5rlu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuSS_ZiX6DGxpau7s4ikusK6GHl-9pjxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "672262671858-2rr5gc4io6o39o8uct7p4mg85oei5rlu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672262671858:android:160bde0ac270fe675a6f6b",
+        "android_client_info": {
+          "package_name": "com.fpnewstim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "672262671858-clnuf0akeffv69lne51vvmd3j2ao75qc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fpnewstim",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "672262671858-2rr5gc4io6o39o8uct7p4mg85oei5rlu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuSS_ZiX6DGxpau7s4ikusK6GHl-9pjxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "672262671858-2rr5gc4io6o39o8uct7p4mg85oei5rlu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

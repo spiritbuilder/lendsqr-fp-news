@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {RootState} from '../index';
 import {Item} from '../../screens/types';
 import {news} from '../../screens/constants';
-let initialState: Item[] = news;
+let initialState: Item[] = [];
 export const newsSlice = createSlice({
   name: 'news',
   initialState,
@@ -10,7 +10,7 @@ export const newsSlice = createSlice({
     setNews: (state, object) => {
       return object.payload;
     },
-  }
+  },
 });
 
 export const {setNews} = newsSlice.actions;

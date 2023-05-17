@@ -12,6 +12,27 @@ import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles as importedStyles} from '../signin';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {signIn} from '../signin';
+import auth from '@react-native-firebase/auth';
+import {setUser} from '../../store/slices/user';
+import {useAppDispatch} from '../../store/hooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+GoogleSignin.configure({
+  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+  hostedDomain: '',
+  forceCodeForRefreshToken: true,
+  accountName: '',
+  iosClientId:
+    '672262671858-ttsuooja3b52s97hh900b67m3kfe6n7a.apps.googleusercontent.com',
+  googleServicePlistPath: '',
+  openIdRealm: '',
+  profileImageSize: 120,
+});
 // import {useNavigation} from '@react-navigation/native';
 
 const SignupSchema = Yup.object().shape({
@@ -21,8 +42,11 @@ const SignupSchema = Yup.object().shape({
   phone: Yup.number().required('Phone number is Required'),
 });
 const Index = ({navigation}: any) => {
+  const [isSigningIn, setIsSigningIn] = useState(false);
   let {navigate} = navigation;
   const [loading, setLoading] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
+  let dispatch = useAppDispatch();
   const formik = useFormik({
     validationSchema: SignupSchema,
     initialValues: {
@@ -32,8 +56,26 @@ const Index = ({navigation}: any) => {
       phone: '',
     },
     onSubmit: values => {
-      // Alert.alert(JSON.stringify(values, null, 2));
-      navigate('News Listing');
+      auth()
+        .createUserWithEmailAndPassword(values.email, values.fullName)
+        .then(async m => {
+          console.log('\n\n====\n\n', m, typeof m, '\n\n====\n\n');
+          dispatch(setUser(m));
+          AsyncStorage.setItem('user', JSON.stringify(m));
+          navigate('News Listing');
+          console.log('User account created & signed in!');
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            dispatch(setUser({...values}));
+            console.log('That email address is already in use!');
+            auth().sendSignInLinkToEmail(values.email);
+          }
+          if (error.code === 'auth/invalid-email') {
+            console.log('That email address is invalid!');
+          }
+          console.error(error);
+        });
     },
   });
 
@@ -98,13 +140,13 @@ const Index = ({navigation}: any) => {
           </TouchableOpacity>
 
           <View style={styles.line}></View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              console.log('signed');
-            }}>
-            <Text style={styles.btnText}>Sign Up with google</Text>
-          </TouchableOpacity>
+          <GoogleSigninButton
+            style={styles.googlebtn}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={() => signIn(setIsSigningIn, dispatch, navigation)}
+            disabled={isSigningIn}
+          />
 
           <View style={importedStyles.footer}>
             <Text style={importedStyles.newText}>
@@ -164,5 +206,11 @@ const styles = StyleSheet.create({
   label: {
     color: '#1A2421',
     marginTop: 10,
+  },
+  googlebtn: {
+    width: 192,
+    height: 48,
+    alignSelf: 'center',
+    marginTop: 100,
   },
 });

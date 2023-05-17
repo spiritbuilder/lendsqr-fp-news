@@ -8,6 +8,7 @@ import {
   useColorScheme,
   View,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
@@ -18,11 +19,13 @@ import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {useDispatch} from 'react-redux';
 import {setNews} from '../../store/slices/news';
 import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setUser} from '../../store/slices/user';
 const Index = () => {
   let {navigate} = useNavigation();
   //   const [news, setNews] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
   const isDarkMode = useColorScheme() === 'dark';
   let {news} = useAppSelector(state => state);
   let dispatch = useAppDispatch();
@@ -61,6 +64,7 @@ const Index = () => {
   useEffect(() => {
     fetchNews();
   }, []);
+  const logout = () => {};
   return (
     <SafeAreaView style={[backgroundStyle]}>
       <StatusBar
@@ -79,8 +83,12 @@ const Index = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.newsListContainer}>
-          {!loading && news.length > 0 ? (
+          {loading ? (
+            <ActivityIndicator size={'large'} color={'#1A2421'} />
+          ) : news.length > 0 ? (
             <FlatList
+              refreshing={loading}
+              onRefresh={() => fetchNews()}
               style={styles.list}
               data={news}
               renderItem={({item, index}) => (
@@ -89,9 +97,33 @@ const Index = () => {
               ListFooterComponent={<View style={{height: 20}} />}
             />
           ) : (
-            <ActivityIndicator size={'large'} color={'#1A2421'} />
+            <>
+              <Text style={styles.fallback}>No news to display</Text>
+              <TouchableOpacity style={styles.btn} onPress={() => fetchNews()}>
+                {loading ? (
+                  <Text style={styles.btnText}>Try Again</Text>
+                ) : (
+                  <ActivityIndicator />
+                )}
+              </TouchableOpacity>
+            </>
           )}
         </View>
+
+        <TouchableOpacity
+          style={styles.logout}
+          onPress={async () => {
+            setLoggingOut(true);
+            await AsyncStorage.removeItem('user');
+            dispatch(setUser({}));
+            setLoggingOut(false);
+          }}>
+          {!loggingOut ? (
+            <Text style={styles.logoutText}>Logout</Text>
+          ) : (
+            <ActivityIndicator />
+          )}
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -105,6 +137,7 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
+    position: 'relative',
   },
   appbar: {
     width: '100%',
@@ -160,5 +193,40 @@ const styles = StyleSheet.create({
     // flex: 1,
     width: '100%',
     // backgroundColor:"green"
+  },
+  fallback: {
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  btn: {
+    backgroundColor: 'black',
+    textAlign: 'center',
+    alignSelf: 'center',
+    padding: 10,
+    borderRadius: 7,
+  },
+  btnText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  logout: {
+    borderColor: 'red',
+    textAlign: 'center',
+    alignSelf: 'center',
+    padding: 10,
+    borderRadius: 20,
+    position: 'absolute',
+    bottom: 20,
+    right: 10,
+    borderWidth: 2,
+    zIndex: 50,
+    elevation: 50,
+    backgroundColor: 'white',
+  },
+  logoutText: {
+    color: 'red',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

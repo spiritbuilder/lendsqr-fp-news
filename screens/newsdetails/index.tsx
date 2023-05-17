@@ -12,7 +12,7 @@ import {useAppSelector, useAppDispatch} from '../../store/hooks';
 import {ScrollView} from 'react-native-gesture-handler';
 import {convertToProper} from '../../helpers';
 import {useNavigation} from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Index = ({navigation}: any) => {
   let {selected, news} = useAppSelector(m => m);
@@ -45,6 +45,10 @@ const Index = ({navigation}: any) => {
                 convertToProper(country)}
             </Text>
           </View>
+
+          <TouchableOpacity onPress={() => navigation.navigate('News Listing')}>
+            <Text style={styles.link}>Go back to news listing</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     </SafeAreaView>
