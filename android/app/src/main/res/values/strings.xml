@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">fpnewstim</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">e9468969-5bbe-4ed9-91bb-95afbe5c2dd2</string>
+    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
+<string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
 </resources>
