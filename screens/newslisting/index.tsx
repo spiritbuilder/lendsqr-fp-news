@@ -59,7 +59,6 @@ const Index = () => {
 
       let {data} = await axios.request(options);
       dispatch(setNews(data.articles));
-      console.log(data.articles[0]);
     } catch (error: any) {
       console.log(error.message);
     }

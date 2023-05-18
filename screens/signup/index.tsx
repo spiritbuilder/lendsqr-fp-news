@@ -12,33 +12,16 @@ import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles as importedStyles} from '../signin';
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes,
-// } from '@react-native-google-signin/google-signin';
 import {MyGoogleButton} from '../signin';
 import {signIn} from '../signin';
 import auth from '@react-native-firebase/auth';
 import {setUser} from '../../store/slices/user';
 import {useAppDispatch} from '../../store/hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// GoogleSignin.configure({
-//   scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-//   hostedDomain: '',
-//   forceCodeForRefreshToken: true,
-//   accountName: '',
-//   iosClientId:
-//     '672262671858-ttsuooja3b52s97hh900b67m3kfe6n7a.apps.googleusercontent.com',
-//   googleServicePlistPath: '',
-//   openIdRealm: '',
-//   profileImageSize: 120,
-// });
-// import {useNavigation} from '@react-navigation/native';
+
 
 const SignupSchema = Yup.object().shape({
   fullName: Yup.string().min(2, 'Too Short!').required('Required'),
-  // password: Yup.string().min(2, 'Too Short!').required('Required'),
   email: Yup.string().email('Invalid email').required('Required'),
   phone: Yup.number().required('Phone number is Required'),
 });
@@ -52,7 +35,6 @@ const Index = ({navigation}: any) => {
     validationSchema: SignupSchema,
     initialValues: {
       email: '',
-      // password: '',
       fullName: '',
       phone: '',
     },
@@ -60,11 +42,9 @@ const Index = ({navigation}: any) => {
       auth()
         .createUserWithEmailAndPassword(values.email, values.fullName)
         .then(async m => {
-          console.log('\n\n====\n\n', m, typeof m, '\n\n====\n\n');
           dispatch(setUser(m));
           AsyncStorage.setItem('user', JSON.stringify(m));
           navigate('News Listing');
-          console.log('User account created & signed in!');
         })
         .catch(error => {
           if (error.code === 'auth/email-already-in-use') {
@@ -129,9 +109,7 @@ const Index = ({navigation}: any) => {
             disabled={loading}
             style={[styles.button, {margin: 20}]}
             onPress={() => {
-              console.log('signed');
               formik.handleSubmit();
-              // setLoading(true);
             }}>
             {loading ? (
               <ActivityIndicator />
@@ -141,13 +119,6 @@ const Index = ({navigation}: any) => {
           </TouchableOpacity>
 
           <View style={styles.line}></View>
-          {/* <GoogleSigninButton
-            style={styles.googlebtn}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={() => signIn(setIsSigningIn, dispatch, navigation)}
-            disabled={isSigningIn}
-          /> */}
           {MyGoogleButton(isSigningIn, setIsSigningIn, dispatch, navigation)}
 
           <View style={importedStyles.footer}>
@@ -180,7 +151,6 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1,
     padding: 10,
-    // backgroundColor:"red"
   },
   input: {
     padding: 8,
@@ -196,7 +166,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     color: 'white',
-    // marginTop: 200,
     alignSelf: 'center',
   },
   btnText: {

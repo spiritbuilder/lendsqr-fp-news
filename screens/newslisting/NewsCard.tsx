@@ -1,10 +1,8 @@
-import {Image, StyleSheet, Text, View, TouchableHighlight} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Item} from '../types';
 import {convertToProper} from '../../helpers';
-import {useNavigation} from '@react-navigation/native';
 import {
-  TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import {useAppDispatch} from '../../store/hooks';
@@ -17,7 +15,6 @@ const NewsCard = ({
   navigate,
   index,
 }: Item & {navigate: any; index: number}) => {
-  console.log(media);
   const dispatch = useAppDispatch();
   return (
     <TouchableWithoutFeedback
@@ -55,10 +52,8 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: 'white',
-    // borderWidth: 2,
     borderRadius: 10,
     marginVertical: 10,
-    // borderColor: 'grey',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
