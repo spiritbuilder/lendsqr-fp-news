@@ -18,25 +18,31 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {setUser} from '../../store/slices/user';
 import {useAppDispatch} from '../../store/hooks';
-GoogleSignin.configure({
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-  hostedDomain: '',
-  forceCodeForRefreshToken: true,
-  accountName: '',
-  iosClientId:
-    '672262671858-ttsuooja3b52s97hh900b67m3kfe6n7a.apps.googleusercontent.com',
-  googleServicePlistPath: '',
-  openIdRealm: '',
-  profileImageSize: 120,
-});
 
-export const signIn = async (setIsSigningIn: any, dispatch: any, navigation: any) => {
+export const signIn = async (
+  setIsSigningIn: any,
+  dispatch: any,
+  navigation: any,
+) => {
+  GoogleSignin.configure({
+    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+    hostedDomain: '',
+    forceCodeForRefreshToken: true,
+    accountName: '',
+    iosClientId:
+      '672262671858-ttsuooja3b52s97hh900b67m3kfe6n7a.apps.googleusercontent.com',
+    googleServicePlistPath: '',
+    openIdRealm: '',
+    profileImageSize: 120,
+  });
   setIsSigningIn(true);
   try {
     await GoogleSignin.hasPlayServices();
+    let signedIn = await GoogleSignin.isSignedIn();
+    if (signedIn) navigation.navigate('News Listing');
     const userInfo = await GoogleSignin.signIn();
     console.log(userInfo);
-    dispatch(setUser(userInfo));
+    dispatch(setUser({...userInfo}));
     await AsyncStorage.setItem('user', JSON.stringify(userInfo));
     navigation.navigate('News Listing');
   } catch (error: any) {
@@ -44,6 +50,7 @@ export const signIn = async (setIsSigningIn: any, dispatch: any, navigation: any
       Alert.alert('SignIn in cancelled');
       // user cancelled the login flow
     } else if (error.code === statusCodes.IN_PROGRESS) {
+      await GoogleSignin.signOut();
       Alert.alert('SignIn in Progress');
       // operation (e.g. sign in) is in progress already
     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
@@ -56,6 +63,23 @@ export const signIn = async (setIsSigningIn: any, dispatch: any, navigation: any
   }
   setIsSigningIn(false);
 };
+
+export const MyGoogleButton = (
+  isSigningIn: any,
+  setIsSigningIn: any,
+  dispatch: any,
+  navigation: any,
+) => {
+  return (
+    <GoogleSigninButton
+      style={styles.googlebtn}
+      size={GoogleSigninButton.Size.Wide}
+      color={GoogleSigninButton.Color.Dark}
+      onPress={async () => await signIn(setIsSigningIn, dispatch, navigation)}
+      disabled={isSigningIn}
+    />
+  );
+};
 const Index = ({navigation}: any) => {
   let dispatch = useAppDispatch();
   const [isSigningIn, setIsSigningIn] = useState(false);
@@ -65,14 +89,7 @@ const Index = ({navigation}: any) => {
       <View style={styles.wrapper}>
         <Text style={styles.appText}>Welcome to FP News</Text>
         <Text style={styles.header}>Sign In with Google Account</Text>
-
-        <GoogleSigninButton
-          style={styles.googlebtn}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={() => signIn(setIsSigningIn, dispatch, navigation)}
-          disabled={isSigningIn}
-        />
+        {MyGoogleButton(isSigningIn, setIsSigningIn, dispatch, navigation)}
         <View style={styles.footer}>
           <Text style={styles.newText}>New here ? </Text>
           <TouchableOpacity

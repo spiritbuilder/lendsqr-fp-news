@@ -97,10 +97,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'justify',
     lineHeight: 20,
+    color: '#1A2421',
   },
   topic: {
     marginVertical: 10,
     borderColor: 'grey',
+    color: '#1A2421',
   },
   link: {
     textDecorationLine: 'underline',

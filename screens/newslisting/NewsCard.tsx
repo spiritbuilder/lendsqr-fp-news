@@ -31,8 +31,10 @@ const NewsCard = ({
         <View style={styles.details}>
           <Text style={styles.title}>{title}</Text>
           <View style={styles.flex}>
-            <Text>{convertToProper(topic)}</Text>
-            <Text>{new Date(published_date).toDateString()}</Text>
+            <Text style={styles.topic}>{convertToProper(topic)}</Text>
+            <Text style={styles.topic}>
+              {new Date(published_date).toDateString()}
+            </Text>
           </View>
         </View>
       </View>
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#1A2421',
   },
-  topic: {},
+  topic: {color: '#1A2421'},
   date: {},
   flex: {
     width: '100%',

@@ -21,6 +21,11 @@ import {setNews} from '../../store/slices/news';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setUser} from '../../store/slices/user';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 const Index = () => {
   let {navigate} = useNavigation();
   //   const [news, setNews] = useState<Item[]>([]);
@@ -114,6 +119,7 @@ const Index = () => {
           style={styles.logout}
           onPress={async () => {
             setLoggingOut(true);
+            await GoogleSignin.signOut()
             await AsyncStorage.removeItem('user');
             dispatch(setUser({}));
             setLoggingOut(false);
