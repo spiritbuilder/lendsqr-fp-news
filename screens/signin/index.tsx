@@ -38,8 +38,8 @@ export const signIn = async (
   setIsSigningIn(true);
   try {
     await GoogleSignin.hasPlayServices();
-    let signedIn = await GoogleSignin.isSignedIn();
-    if (signedIn) navigation.navigate('News Listing');
+    // let signedIn = await GoogleSignin.isSignedIn();
+    // if (signedIn) navigation.navigate('News Listing');
     const userInfo = await GoogleSignin.signIn();
     console.log(userInfo);
     dispatch(setUser({...userInfo}));
@@ -50,13 +50,22 @@ export const signIn = async (
       Alert.alert('SignIn in cancelled');
       // user cancelled the login flow
     } else if (error.code === statusCodes.IN_PROGRESS) {
-      await GoogleSignin.signOut();
-      Alert.alert('SignIn in Progress');
+      console.log(error);
+      // let userInfo = await GoogleSignin.signInSilently();
+      // console.log(userInfo);
+      // dispatch(setUser({...userInfo}));
+      // await AsyncStorage.setItem('user', JSON.stringify(userInfo));
+      // navigation.navigate('News Listing');
       // operation (e.g. sign in) is in progress already
     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
       // play services not available or outdated
     } else {
       console.log(error);
+      let userInfo = await GoogleSignin.signInSilently();
+      console.log(userInfo);
+      dispatch(setUser({...userInfo}));
+      await AsyncStorage.setItem('user', JSON.stringify(userInfo));
+      navigation.navigate('News Listing');
       console.log('other happpened');
       // some other error happened
     }
@@ -69,10 +78,11 @@ export const MyGoogleButton = (
   setIsSigningIn: any,
   dispatch: any,
   navigation: any,
+  style?: any,
 ) => {
   return (
     <GoogleSigninButton
-      style={styles.googlebtn}
+      style={style ? style : styles.googlebtn}
       size={GoogleSigninButton.Size.Wide}
       color={GoogleSigninButton.Color.Dark}
       onPress={async () => await signIn(setIsSigningIn, dispatch, navigation)}

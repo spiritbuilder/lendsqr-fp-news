@@ -26,6 +26,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import crashlytics from '@react-native-firebase/crashlytics';
 const Index = () => {
   let {navigate} = useNavigation();
   //   const [news, setNews] = useState<Item[]>([]);
@@ -34,10 +35,7 @@ const Index = () => {
   const isDarkMode = useColorScheme() === 'dark';
   let {news} = useAppSelector(state => state);
   let dispatch = useAppDispatch();
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? 'black' : 'white',
-  };
-  useEffect;
+
   const fetchNews = async () => {
     setLoading(true);
     try {
@@ -56,11 +54,10 @@ const Index = () => {
           'X-RapidAPI-Host': 'covid-19-news.p.rapidapi.com',
         },
       };
-
       let {data} = await axios.request(options);
       dispatch(setNews(data.articles));
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error);
     }
     setLoading(false);
   };
@@ -70,17 +67,14 @@ const Index = () => {
   }, []);
   const logout = () => {};
   return (
-    <SafeAreaView style={[backgroundStyle]}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <SafeAreaView testID='top'>
       <View style={styles.screen}>
         <View style={styles.appbar}>
-          <Text style={styles.toptext}>FP News</Text>
+          <Text testID='topbar' style={styles.toptext}>FP News</Text>
           <TouchableOpacity
             style={styles.errorbtn}
             onPress={() => {
+              crashlytics().log('Crash button pressed');
               throw new Error('RunTime error');
             }}>
             <Text style={styles.errText}>Error</Text>
@@ -88,9 +82,14 @@ const Index = () => {
         </View>
         <View style={styles.newsListContainer}>
           {loading ? (
-            <ActivityIndicator size={'large'} color={'#1A2421'} />
+            <ActivityIndicator
+              testID="loading"
+              size={'large'}
+              color={'#1A2421'}
+            />
           ) : news.length > 0 ? (
             <FlatList
+              testID="News"
               refreshing={loading}
               onRefresh={() => fetchNews()}
               style={styles.list}
@@ -104,7 +103,7 @@ const Index = () => {
             <>
               <Text style={styles.fallback}>No news to display</Text>
               <TouchableOpacity style={styles.btn} onPress={() => fetchNews()}>
-                {loading ? (
+                {!loading ? (
                   <Text style={styles.btnText}>Try Again</Text>
                 ) : (
                   <ActivityIndicator />
@@ -115,11 +114,12 @@ const Index = () => {
         </View>
 
         <TouchableOpacity
+          testID="logout"
           style={styles.logout}
           onPress={async () => {
             setLoggingOut(true);
-            await GoogleSignin.signOut()
             await AsyncStorage.removeItem('user');
+            console.log("logging out")
             dispatch(setUser({}));
             setLoggingOut(false);
           }}>
@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    backgroundColor: 'white',
   },
   appbar: {
     width: '100%',

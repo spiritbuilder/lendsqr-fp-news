@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "672262671858-2rr5gc4io6o39o8uct7p4mg85oei5rlu.apps.googleusercontent.com",
+          "client_id": "672262671858-pbbp1tefe6c0abbtmvnjribno3kfdja8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fpnews",
+            "certificate_hash": "18216fa6c33e3ad1a75218b2b054dd5007cd6cd9"
+          }
+        },
+        {
+          "client_id": "672262671858-5fun89f6uja6b61d3ok11stpddv8qk34.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +37,13 @@
             {
               "client_id": "672262671858-2rr5gc4io6o39o8uct7p4mg85oei5rlu.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "672262671858-ttsuooja3b52s97hh900b67m3kfe6n7a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.fpnews"
+              }
             }
           ]
         }
@@ -43,6 +58,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "672262671858-b3j8hn1hhuaoh227vgg4b2gen25k52ch.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fpnewstim",
+            "certificate_hash": "18216fa6c33e3ad1a75218b2b054dd5007cd6cd9"
+          }
+        },
+        {
           "client_id": "672262671858-clnuf0akeffv69lne51vvmd3j2ao75qc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -51,7 +74,7 @@
           }
         },
         {
-          "client_id": "672262671858-2rr5gc4io6o39o8uct7p4mg85oei5rlu.apps.googleusercontent.com",
+          "client_id": "672262671858-5fun89f6uja6b61d3ok11stpddv8qk34.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -66,6 +89,13 @@
             {
               "client_id": "672262671858-2rr5gc4io6o39o8uct7p4mg85oei5rlu.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "672262671858-ttsuooja3b52s97hh900b67m3kfe6n7a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.fpnews"
+              }
             }
           ]
         }

@@ -19,7 +19,6 @@ import {setUser} from '../../store/slices/user';
 import {useAppDispatch} from '../../store/hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 const SignupSchema = Yup.object().shape({
   fullName: Yup.string().min(2, 'Too Short!').required('Required'),
   email: Yup.string().email('Invalid email').required('Required'),
@@ -68,6 +67,7 @@ const Index = ({navigation}: any) => {
         <ScrollView style={styles.scroll}>
           <Text style={styles.label}>Full Name</Text>
           <TextInput
+            placeholderTextColor="#bbb"
             enabled={!loading}
             style={styles.input}
             placeholder="Elon Musk"
@@ -81,6 +81,7 @@ const Index = ({navigation}: any) => {
 
           <Text style={styles.label}>Email</Text>
           <TextInput
+            placeholderTextColor="#bbb"
             enabled={!loading}
             keyboardType="email-address"
             style={styles.input}
@@ -94,6 +95,7 @@ const Index = ({navigation}: any) => {
           ) : null}
           <Text style={styles.label}>Phone</Text>
           <TextInput
+            placeholderTextColor="#bbb"
             enabled={!loading}
             keyboardType="numeric"
             style={styles.input}
@@ -119,7 +121,13 @@ const Index = ({navigation}: any) => {
           </TouchableOpacity>
 
           <View style={styles.line}></View>
-          {MyGoogleButton(isSigningIn, setIsSigningIn, dispatch, navigation)}
+          {MyGoogleButton(
+            isSigningIn,
+            setIsSigningIn,
+            dispatch,
+            navigation,
+            styles.googlebtn,
+          )}
 
           <View style={importedStyles.footer}>
             <Text style={importedStyles.newText}>
@@ -182,6 +190,6 @@ const styles = StyleSheet.create({
     width: 192,
     height: 48,
     alignSelf: 'center',
-    marginTop: 100,
+    marginTop: 20,
   },
 });

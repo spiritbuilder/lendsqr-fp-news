@@ -2,9 +2,7 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Item} from '../types';
 import {convertToProper} from '../../helpers';
-import {
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import {TouchableWithoutFeedback} from 'react-native';
 import {useAppDispatch} from '../../store/hooks';
 import {setSelected} from '../../store/slices/selected';
 const NewsCard = ({
@@ -18,6 +16,7 @@ const NewsCard = ({
   const dispatch = useAppDispatch();
   return (
     <TouchableWithoutFeedback
+    testID='newsItem'
       style={styles.wrapper}
       onPress={() => {
         dispatch(setSelected(index));
@@ -49,10 +48,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     resizeMode: 'cover',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   card: {
     backgroundColor: 'white',
     borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: '#888',
     marginVertical: 10,
     shadowColor: '#000',
     shadowOffset: {
